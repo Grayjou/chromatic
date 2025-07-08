@@ -1,6 +1,6 @@
-# Chromatic - Advanced Color Manipulation Library
+# Chromatica - Advanced Color Manipulation Library
 
-Chromatic is a powerful Python library for advanced color manipulation, gradient generation, and color space conversions. Designed for graphics programming, data visualization, and image processing, Chromatic provides intuitive tools for working with colors in various formats and creating stunning gradients with mathematical precision.
+Chromatica is a powerful Python library for advanced color manipulation, gradient generation, and color space conversions. Designed for graphics programming, data visualization, and image processing, Chromatica provides intuitive tools for working with colors in various formats and creating stunning gradients with mathematical precision.
 
 ## Key Features
 
@@ -14,7 +14,7 @@ Chromatic is a powerful Python library for advanced color manipulation, gradient
 ## Installation
 
 ```bash
-pip install chromatic
+pip install chromatica
 ```
 
 ## Quick Start
@@ -22,7 +22,7 @@ pip install chromatic
 ### Color Conversion
 
 ```python
-from chromatic import convert, ColorRGB, ColorHSV
+from chromatica import convert, ColorRGB, ColorHSV
 
 # Simple color conversion
 rgb = (255, 0, 0)  # Red
@@ -38,7 +38,7 @@ print(f"Red as HSV object: {red_hsv}")  # ColorHSV((0, 100, 100))
 ### Gradient Generation
 
 ```python
-from chromatic import Gradient1D, Gradient2D
+from chromatica import Gradient1D, Gradient2D
 
 # Create a 1D gradient from red to blue
 gradient_1d = Gradient1D.from_colors(
@@ -65,7 +65,7 @@ Image.fromarray(gradient_2d.colors.astype(np.uint8), mode='RGB').save('gradient.
 ### Radial Gradient
 
 ```python
-from chromatic import radial_gradient
+from chromatica import radial_gradient
 import numpy as np
 
 # Create radial gradient
@@ -126,7 +126,7 @@ rotated = gradient.wrap_around(
 ```
 
 ## Examples (WIP Not Avaliable Yet)
-Check out the examples in the [examples directory](https://github.com/Grayjou/chromatic/tree/main/examples) to see Chromatic in action:
+Check out the examples in the [examples directory](https://github.com/Grayjou/chromatica/tree/main/examples) to see Chromatica in action:
 
 1. [Basic Gradient](examples/basic_gradient.py)
 2. [Radial Transparency](examples/radial_transparency.py)
@@ -139,7 +139,7 @@ We welcome contributions! Please see our [Contribution Guidelines](CONTRIBUTING.
 
 ## License
 
-Chromatic is released under the MIT License. See [LICENSE](LICENSE) for details.
+Chromatica is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
