@@ -1,12 +1,12 @@
-# Contributing to Chromatic
+# Contributing to Chromatica
 
-Thank you for considering contributing to Chromatic! We welcome all contributions that help improve this library for everyone. Whether you're fixing bugs, adding new features, improving documentation, or suggesting ideas, your input is valuable.
+Thank you for considering contributing to Chromatica! We welcome all contributions that help improve this library for everyone. Whether you're fixing bugs, adding new features, improving documentation, or suggesting ideas, your input is valuable.
 
 ## How to Contribute
 
 ### 1. Reporting Issues
 - **Bug Reports**: Please include:
-  - Chromatic version
+  - Chromatica version
   - Python version
   - Steps to reproduce
   - Expected vs. actual behavior
@@ -21,8 +21,8 @@ Thank you for considering contributing to Chromatic! We welcome all contribution
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/your-username/chromatic.git
-   cd chromatic
+   git clone https://github.com/your-username/chromatica.git
+   cd chromatica
    ```
 3. Install dependencies:
    ```bash
@@ -138,6 +138,6 @@ def test_radial_gradient_creates_correct_size():
 
 Reach out to the maintainers:
 - Grayjou (cgrayjou@gmail.com)
-- GitHub Issues: https://github.com/Grayjou/chromatic/issues
+- GitHub Issues: https://github.com/Grayjou/chromatica/issues
 
-Thank you for helping make Chromatic better!
+Thank you for helping make Chromatica better!
