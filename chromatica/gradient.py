@@ -27,25 +27,27 @@ class Gradient1D(Color1DArr):
     @classmethod
     def from_colors(
         cls,
-        color1 : Union[ColorInt, Tuple[int, ...], int],
-        color2 : Union[ColorInt, Tuple[int, ...], int],
+        color1: Union[ColorInt, Tuple[int, ...], int],
+        color2: Union[ColorInt, Tuple[int, ...], int],
         steps: int,
         color_mode: Optional[Union[ColorMode, str]] = None,
         unit_transform: Optional[Callable[[NDArray], NDArray]] = None,
-        color_format: ColorFormat = ColorFormat.INT
+        color_format: ColorFormat = ColorFormat.INT,
+        direction: Optional[str] = None  # 'cw', 'ccw', or None for shortest path
     ) -> 'Gradient1D':
         """
-        Create a 1D gradient from two colors.
+        Create a 1D gradient from two colors, optionally specifying hue direction.
 
         :param color1: The first color (ColorInt or color-like).
         :param color2: The second color (ColorInt or color-like).
         :param steps: Number of steps in the gradient.
-        :param mode: Optional color mode (if not provided, inferred).
+        :param color_mode: Optional color mode (if not provided, inferred or defaults to 'RGB').
         :param unit_transform: Optional function to transform the interpolation parameter.
-        :param format: The format of the resulting colors.
+        :param color_format: The format of the resulting colors.
+        :param direction: 'cw' to force clockwise hue wrap, 'ccw' for counter-clockwise, None for shortest.
         :return: A Gradient1D object.
         """
-        # Infer color_mode if possible
+        # ── infer mode ───────────────────────────────────────────────────────────
         inferred_mode = color_mode
         if isinstance(color1, ColorInt) and isinstance(color2, ColorInt):
             if color1.mode != color2.mode:
@@ -59,28 +61,59 @@ class Gradient1D(Color1DArr):
             inferred_mode = inferred_mode or 'RGB'
 
         if inferred_mode not in color_classes:
-            raise ValueError(f"Unsupported color mode: {inferred_mode}. Must be one of {list(color_classes.keys())}")
+            raise ValueError(f"Unsupported color mode: {inferred_mode}")
 
-        # Convert to ColorInt instances in the same mode
-        color1 = color(inferred_mode, color1)
-        color2 = color(inferred_mode, color2)
+        # ── convert inputs to numpy floats ───────────────────────────────────────
+        c1 = color(inferred_mode, color1)
+        c2 = color(inferred_mode, color2)
+        start = np.array(c1.value, dtype=float)
+        end   = np.array(c2.value, dtype=float)
 
-        # Get numpy arrays of the color values
-        start_color = np.array(color1.value, dtype=float)
-        end_color = np.array(color2.value, dtype=float)
-
-        # Interpolation parameter
-        unit_array = np.linspace(0, 1, steps, dtype=float)[:, np.newaxis]
+        # ── build unit interpolation array ───────────────────────────────────────
+        u = np.linspace(0.0, 1.0, steps, dtype=float)[:, None]
         if unit_transform is not None:
-            unit_array = unit_transform(unit_array)
+            u = unit_transform(u)
 
-        # Linear interpolation
-        colors = start_color * (1 - unit_array) + end_color * unit_array
+        # ── HSV/HSL: special circular hue logic ─────────────────────────────────
+        mode_up = inferred_mode.upper()
+        if mode_up in ('HSV', 'HSL', 'PILHSV'):
 
-        if format == ColorFormat.INT:
-            colors = colors.astype(int)
+            # normalize into [0,360)
+            h0 = start[0] % 360
+            h1 = end[0]   % 360
+
+            if direction == 'cw':
+                # always go up
+                if h1 <= h0:
+                    h1 += 360
+            elif direction == 'ccw':
+                # always go down
+                if h1 >= h0:
+                    h1 -= 360
+            else:
+                # shortest path
+                delta = h1 - h0
+                if delta > 180:
+                    h1 -= 360
+                elif delta < -180:
+                    h1 += 360
+
+            dh = h1 - h0
+            hues = (h0 + u * dh) % 360
+            # interpolate remaining channels linearly
+            rest = start[1:] * (1 - u) + end[1:] * u
+            colors = np.concatenate([hues, rest], axis=1)
+
+        else:
+            # RGB (or any linear space): simple lerp
+            colors = start * (1 - u) + end * u
+
+        # ── finalize ─────────────────────────────────────────────────────────────
+        if color_format == ColorFormat.INT:
+            colors = np.round(colors).astype(int)
 
         return cls(colors, color_mode=inferred_mode, color_format=color_format)
+
     def wrap_around(
             self,
             width: int,

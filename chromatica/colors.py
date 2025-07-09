@@ -185,6 +185,7 @@ def get_color_mode(mode: Union[str, Type[ColorInt]]) -> Type[ColorInt]:
     Returns:
         Type[ColorInt]: The corresponding color class.
     """
+
     if isinstance(mode, str):
         mode = mode.upper()
         return color_classes.get(mode, ColorInt)

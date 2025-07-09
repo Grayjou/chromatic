@@ -47,7 +47,7 @@ class ColorArr:
             self.colors,
             from_space=self.mode.lower(),
             to_space=to_mode.lower(),
-            input_type=self.format.value,
+            input_type=self.format,
             output_type=output_type
         )
     @property
