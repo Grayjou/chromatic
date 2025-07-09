@@ -132,6 +132,8 @@ Check out the examples in the [examples directory](https://github.com/Grayjou/ch
 2. [Radial Transparency](examples/radial_transparency.py)
 3. [Color Space Conversions](examples/color_conversions.py)
 4. [Animated Gradients](examples/animated_gradients.py) *(requires matplotlib)*
+
+   
 ![Example diagram](https://i.imgur.com/ZGKyMST.png)
 ## Contributing
 
